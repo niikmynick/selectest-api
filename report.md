@@ -220,3 +220,22 @@
 	    else:
 	        existing_ids = set()
       	```
+
+после правок приложение успешно запустилось
+
+<img width="354" height="94" alt="image" src="https://github.com/user-attachments/assets/315e6111-6ca0-4b6d-928b-034f5c448bbe" />
+
+вакансии добавляются
+
+<img width="1624" height="1061" alt="image" src="https://github.com/user-attachments/assets/e8c8bd3a-c565-4145-8d0a-1f096724d919" />
+
+удаляются
+
+<img width="1624" height="1061" alt="image" src="https://github.com/user-attachments/assets/1deaeaf0-3bcf-407f-b033-866f7e6d1c46" />
+
+<img width="1624" height="1061" alt="image" src="https://github.com/user-attachments/assets/e15b8743-9c60-40bc-ae3c-3c08f7762c7f" />
+
+фоновая задача парсера работает исправно
+
+<img width="1240" height="510" alt="image" src="https://github.com/user-attachments/assets/174afedd-755c-493b-b3f7-795753123ab4" />
+
