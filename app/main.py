@@ -1,4 +1,5 @@
 import logging
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
@@ -9,13 +10,7 @@ from app.services.parser import parse_and_store
 from app.services.scheduler import create_scheduler
 
 logger = logging.getLogger(__name__)
-
-app = FastAPI(title="Selectel Vacancies API")
-app.include_router(api_router)
-
 setup_logging()
-
-_scheduler = None
 
 
 async def _run_parse_job() -> None:
@@ -26,17 +21,18 @@ async def _run_parse_job() -> None:
         logger.exception("Ошибка фонового парсинга: %s", exc)
 
 
-@app.on_event("startup")
-async def on_startup() -> None:
+# on_event теперь считается deprecated, поэтому меняю на lifespan
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     logger.info("Запуск приложения")
     await _run_parse_job()
-    global _scheduler
-    _scheduler = create_scheduler(_run_parse_job)
-    _scheduler.start()
+    scheduler = create_scheduler(_run_parse_job)
+    scheduler.start()
+    yield
 
-
-@app.on_event("shutdown")
-async def on_shutdown() -> None:
     logger.info("Остановка приложения")
-    if _scheduler:
-        _scheduler.shutdown(wait=False)
+    scheduler.shutdown(wait=False)
+
+
+app = FastAPI(title="Selectel Vacancies API", lifespan=lifespan)
+app.include_router(api_router)
